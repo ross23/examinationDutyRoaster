@@ -23,17 +23,18 @@ room_capacity.csv
 Note: Room List (Room, Capacity)
 ```
 ###**Fedora Project** 
-```
+
 > dnf install -y R 
 
 or 
 
 > yum install -y R 
-```
 
-```
+
+R packages:
+
 > install.packages("plyr")
-```
+
 
 ## INPUT
 Enter INPUT in Line no. from ** 41 to 55** in the file roasterScheduling.R
@@ -41,8 +42,13 @@ Enter INPUT in Line no. from ** 41 to 55** in the file roasterScheduling.R
 ##Command
 > sh generate-roaster.sh
 
+```
+[Note: run several times to get the expected results]
+```
+
 ##Output
 > examinationRoaster.odt
+
 > totalDuties.ods
 
 #Request
