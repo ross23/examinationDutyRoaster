@@ -71,6 +71,9 @@ for (day in 1:endDay){
 
   if(as.Date(startDate,format = "%d/%m/%Y") != as.Date(holiday$date1,format = "%d/%m/%Y") &  as.Date(startDate,format = "%d/%m/%Y") != as.Date(holiday$date2,format = "%d/%m/%Y")) 
   {
+      dutyPoolForEachShift <- NULL
+      
+      
       #loop to the shift
       for (shift in 1:totalShift){
 	  #print(paste("Shift", shift))
@@ -108,7 +111,9 @@ for (day in 1:endDay){
 	  chiefInvigilator <- rbind(chiefInvigilator, invigilation_pool11)
 	  chiefInvigilator <- rbind(chiefInvigilator, invigilation_pool12)
 			    
-	      
+	
+ 	
+	
 	#loop for rooms
 	for (room in 1:nrow(room_capacity)){
 	
@@ -139,86 +144,203 @@ for (day in 1:endDay){
 		      invigilation_pool5 <- NULL
 		      
 		      #Selecting lecturer
-		      randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
 		      
-		      if((sorted_lecturer[randomSequence1,6]) < totalDuties){
+		      set.seed(101)
+		      randomSequence1 <- round(runif(1, 1, nrow(sorted_lecturer)))
+
+		      pool <- (randomSequence1 %in% dutyPoolForEachShift$Sequence)
+		      
+		      if(((sorted_lecturer[randomSequence1,6]) < totalDuties) & pool == FALSE){
 			invigilation_pool1<- sorted_lecturer[randomSequence1,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence1,6] <- sorted_lecturer[randomSequence1,6] + 1
 			sorted_lecturer1[randomSequence1,6] <- sorted_lecturer1[randomSequence1,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence1,])
+
+		      }else if(((sorted_lecturer[randomSequence1,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
+			randomSequence11 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_pool1<- sorted_lecturer[randomSequence11,]
+		
+			sorted_lecturer[randomSequence11,6] <- sorted_lecturer[randomSequence11,6] + 1
+			sorted_lecturer1[randomSequence11,6] <- sorted_lecturer1[randomSequence11,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence1,])
+
+			
 		      }
-		      #else{
-			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence1),]
-		      #}
 		      #increase the total number of duties of lecturer
 		      #sorted_lecturer[randomSequence1,5] <- sorted_lecturer[randomSequence1,5] + 1
 
       		      #Selecting lecturer
-		      randomSequence2 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #randomSequence2 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #set.seed(102)
+		      randomSequence2 <- round(runif(1, 1, nrow(sorted_lecturer)))
+	      
+		      pool <- (randomSequence2 %in% dutyPoolForEachShift$Sequence)      
 		      
-		      if((sorted_lecturer[randomSequence2,6]) < totalDuties){
+		      if(((sorted_lecturer[randomSequence2,6]) < totalDuties ) & pool == FALSE){
 			invigilation_pool2<- sorted_lecturer[randomSequence2,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence2),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence2,6] <- sorted_lecturer[randomSequence2,6] + 1
 			sorted_lecturer1[randomSequence2,6] <- sorted_lecturer1[randomSequence2,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence2,])
+
+		      }else if(((sorted_lecturer[randomSequence2,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence2),]
+			randomSequence22 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_pool2<- sorted_lecturer[randomSequence22,]
+		
+			sorted_lecturer[randomSequence22,6] <- sorted_lecturer[randomSequence22,6] + 1
+			sorted_lecturer1[randomSequence22,6] <- sorted_lecturer1[randomSequence22,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence22,])
+
+			
 		      }
+		      #
 		      #else{
 			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence2),]
 		      #}
 
-      		      #Selecting lecturer
-		      randomSequence3 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
-
-		      if((sorted_lecturer[randomSequence3,6]) < totalDuties){
-			invigilation_pool3<- sorted_lecturer[randomSequence3,]
+		      
+		      #Selecting lecturer
+		      #randomSequence3 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #set.seed(103)
+		      randomSequence3 <- round(runif(1, 1, nrow(sorted_lecturer)))
+		      
+		      pool <- (randomSequence3 %in% dutyPoolForEachShift$Sequence)      
+		      
+		      if(((sorted_lecturer[randomSequence3,6]) < totalDuties ) & pool == FALSE){
+			invigilation_pool2<- sorted_lecturer[randomSequence3,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence3),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence3,6] <- sorted_lecturer[randomSequence3,6] + 1
 			sorted_lecturer1[randomSequence3,6] <- sorted_lecturer1[randomSequence3,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence3,])
+
+		      }else if(((sorted_lecturer[randomSequence3,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence3),]
+			randomSequence33 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_pool2<- sorted_lecturer[randomSequence33,]
+		
+			sorted_lecturer[randomSequence33,6] <- sorted_lecturer[randomSequence33,6] + 1
+			sorted_lecturer1[randomSequence33,6] <- sorted_lecturer1[randomSequence33,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence33,])
+
+			
 		      }
+
 		      #else{
 			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence3),]
 		      #}
 
 		      #Selecting senior lecturer
-		      randomSequence4 <- sample(1:nrow(sorted_senior_lecturer), 1, replace=F)
+		      #randomSequence4 <- sample(1:nrow(sorted_senior_lecturer), 1, replace=F)
 
-		      if((sorted_senior_lecturer[randomSequence4,6]) < totalDuties){
+		      #set.seed(104)
+		      randomSequence4 <- round(runif(1, 1, nrow(sorted_senior_lecturer)))
+		      
+      		      pool <- (randomSequence4 %in% dutyPoolForEachShift$Sequence)      
+
+		      if(((sorted_senior_lecturer[randomSequence4,6]) < totalDuties) & pool == FALSE){
 			invigilation_pool4<- sorted_senior_lecturer[randomSequence4,]
 			sorted_senior_lecturer <- sorted_senior_lecturer[-(randomSequence4),]
 			#increase the total number of duties of lecturer
 			sorted_senior_lecturer[randomSequence4,6] <- sorted_senior_lecturer[randomSequence4,6] + 1
 			sorted_senior_lecturer1[randomSequence4,6] <- sorted_senior_lecturer1[randomSequence4,6] + 1
+
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_senior_lecturer[randomSequence4,])
+
+			}else if(((sorted_senior_lecturer[randomSequence4,6]) < totalDuties) & pool == TRUE){
+
+			sorted_senior_lecturer <- sorted_senior_lecturer[-(randomSequence4),]
+			randomSequence44 <- sample(1:nrow(sorted_senior_lecturer), 1, replace=F)
+			invigilation_pool4<- sorted_senior_lecturer[randomSequence44,]
+		
+			sorted_senior_lecturer[randomSequence44,6] <- sorted_senior_lecturer[randomSequence44,6] + 1
+			sorted_senior_lecturer1[randomSequence44,6] <- sorted_senior_lecturer1[randomSequence44,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_senior_lecturer[randomSequence44,])
+
+			
 		      }
 		      #else{
 			#sorted_senior_lecturer1 <- sorted_senior_lecturer1[-(randomSequence4),]
 		      #}
 		      
 		      #Selecting assistant professor
-		      randomSequence5 <- sample(1:nrow(sorted_assistant_professor), 1, replace=F)
-		      
-		      if((sorted_assistant_professor[randomSequence5,6]) < totalDuties){
+		      #randomSequence5 <- sample(1:nrow(sorted_assistant_professor), 1, replace=F)
+
+      		      #set.seed(105)
+		      randomSequence5 <- round(runif(1, 1, nrow(sorted_assistant_professor)))
+
+		      pool <- (randomSequence5 %in% dutyPoolForEachShift$Sequence)      
+		      		      
+		      if(((sorted_assistant_professor[randomSequence5,6]) < totalDuties) & pool == FALSE){
 			invigilation_pool5<- sorted_assistant_professor[randomSequence5,]
 			sorted_assistant_professor<- sorted_assistant_professor[-(randomSequence5),]
 			#increase the total number of duties of lecturer
 			sorted_assistant_professor[randomSequence5,6] <- sorted_assistant_professor[randomSequence5,6] + 1
 			sorted_assistant_professor1[randomSequence5,6] <- sorted_assistant_professor1[randomSequence5,6] + 1
+
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_assistant_professor[randomSequence5,])
+		      }else if(((sorted_assistant_professor[randomSequence5,6]) < totalDuties) & pool == TRUE){
+
+			sorted_assistant_professor <- sorted_assistant_professor[-(randomSequence5),]
+			randomSequence55 <- sample(1:nrow(sorted_assistant_professor), 1, replace=F)
+			invigilation_pool5<- sorted_assistant_professor[randomSequence55,]
+		
+			sorted_assistant_professor[randomSequence55,6] <- sorted_assistant_professor[randomSequence55,6] + 1
+			sorted_assistant_professor1[randomSequence55,6] <- sorted_assistant_professor1[randomSequence55,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_assistant_professor[randomSequence55,])
+
+			
 		      }
 		      #else{
 			#sorted_assistant_professor1 <- sorted_assistant_professor1[-(randomSequence5),]
 		      #}
 		      
 		      #Selecting associate professor
-		      randomSequence6 <- sample(1:nrow(sorted_associate_professor), 1, replace=F)
+		      #randomSequence6 <- sample(1:nrow(sorted_associate_professor), 1, replace=F)
 		      
-		      if((sorted_associate_professor[randomSequence6,6]) < totalDuties){
+		      #set.seed(106)
+		      randomSequence6 <- round(runif(1, 1, nrow(sorted_associate_professor)))
+
+		      
+     		      pool <- (randomSequence6 %in% dutyPoolForEachShift$Sequence)      
+
+		      if(((sorted_associate_professor[randomSequence6,6]) < totalDuties) & pool == FALSE ){
 			invigilation_pool6<- sorted_associate_professor[randomSequence6,]
 			sorted_associate_professor <- sorted_associate_professor[-(randomSequence6),]
 			#increase the total number of duties of lecturer
 			sorted_associate_professor[randomSequence6,6] <- sorted_associate_professor[randomSequence6,6] + 1
 			sorted_associate_professor1[randomSequence6,6] <- sorted_associate_professor1[randomSequence6,6] + 1
+
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_associate_professor[randomSequence6,])
+		      }else if(((sorted_associate_professor[randomSequence6,6]) < totalDuties) & pool == TRUE){
+
+			sorted_associate_professor <- sorted_associate_professor[-(randomSequence6),]
+			randomSequence66 <- sample(1:nrow(sorted_associate_professor), 1, replace=F)
+			invigilation_pool6<- sorted_associate_professor[randomSequence66,]
+		
+			sorted_associate_professor[randomSequence66,6] <- sorted_associate_professor[randomSequence66,6] + 1
+			sorted_associate_professor1[randomSequence66,6] <- sorted_associate_professor1[randomSequence66,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_associate_professor[randomSequence66,])
+
+			
 		      }
 		      #else{
 			#sorted_associate_professor1 <- sorted_associate_professor1[-(randomSequence6),]
@@ -321,58 +443,127 @@ for (day in 1:endDay){
 		      
 
       		      #Selecting lecturer
-		      randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #set.seed(107)
+		      randomSequence1 <- round(runif(1, 1, nrow(sorted_lecturer)))
+
 		      
-		      if((sorted_lecturer[randomSequence1,6]) < totalDuties){
+		      pool <- (randomSequence1 %in% dutyPoolForEachShift$Sequence)
+		      
+		      if(((sorted_lecturer[randomSequence1,6]) < totalDuties) & pool == FALSE){
 			invigilation_pool1<- sorted_lecturer[randomSequence1,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence1,6] <- sorted_lecturer[randomSequence1,6] + 1
 			sorted_lecturer1[randomSequence1,6] <- sorted_lecturer1[randomSequence1,6] + 1
+		      }else if(((sorted_lecturer[randomSequence1,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
+			randomSequence11 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_pool1<- sorted_lecturer[randomSequence11,]
+		
+			sorted_lecturer[randomSequence11,6] <- sorted_lecturer[randomSequence11,6] + 1
+			sorted_lecturer1[randomSequence11,6] <- sorted_lecturer1[randomSequence11,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence1,])
+
+			
 		      }
 		      #else{
 			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence1),]
 		      #}
 
       		      #Selecting lecturer
-		      randomSequence2 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #randomSequence2 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+      		      #set.seed(108)
+		      randomSequence2 <- round(runif(1, 1, nrow(sorted_lecturer)))
 
-		      if((sorted_lecturer[randomSequence2,6]) < totalDuties){
+		      pool <- (randomSequence2 %in% dutyPoolForEachShift$Sequence)
+
+		      if(((sorted_lecturer[randomSequence2,6]) < totalDuties) & pool == FALSE){
 			invigilation_pool2<- sorted_lecturer[randomSequence2,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence2),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence2,6] <- sorted_lecturer[randomSequence2,6] + 1
 			sorted_lecturer1[randomSequence2,6] <- sorted_lecturer1[randomSequence2,6] + 1
+		      }else if(((sorted_lecturer[randomSequence2,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence2),]
+			randomSequence22 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_pool2<- sorted_lecturer[randomSequence22,]
+		
+			sorted_lecturer[randomSequence22,6] <- sorted_lecturer[randomSequence22,6] + 1
+			sorted_lecturer1[randomSequence22,6] <- sorted_lecturer1[randomSequence22,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence22,])
+
+			
 		      }
 		      #else{
 			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence2),]
 		      #}
 
 		      #Selecting senior lecturer
-		      randomSequence3 <- sample(1:nrow(sorted_senior_lecturer), 1, replace=F)
+		      #randomSequence3 <- sample(1:nrow(sorted_senior_lecturer), 1, replace=F)
 
-		      if((sorted_senior_lecturer[randomSequence3,6]) < totalDuties){
+		      #set.seed(109)
+		      randomSequence3 <- round(runif(1, 1, nrow(sorted_senior_lecturer)))
+
+		      
+		      pool <- (randomSequence3 %in% dutyPoolForEachShift$Sequence)
+		      
+		      if(((sorted_senior_lecturer[randomSequence3,6]) < totalDuties) & pool == FALSE){
 			invigilation_pool3<- sorted_senior_lecturer[randomSequence3,]
 			sorted_senior_lecturer <- sorted_senior_lecturer[-(randomSequence3),]
 			#increase the total number of duties of lecturer
 			sorted_senior_lecturer[randomSequence3,6] <- sorted_senior_lecturer[randomSequence3,6] + 1
 			sorted_senior_lecturer1[randomSequence3,6] <- sorted_senior_lecturer1[randomSequence3,6] + 1
 
-			}
+			}else if(((sorted_senior_lecturer[randomSequence3,6]) < totalDuties) & pool == TRUE){
+
+			sorted_senior_lecturer <- sorted_senior_lecturer[-(randomSequence3),]
+			randomSequence33 <- sample(1:nrow(sorted_senior_lecturer), 1, replace=F)
+			invigilation_pool3<- sorted_senior_lecturer[randomSequence33,]
+		
+			sorted_senior_lecturer[randomSequence33,6] <- sorted_senior_lecturer[randomSequence33,6] + 1
+			sorted_senior_lecturer1[randomSequence33,6] <- sorted_senior_lecturer1[randomSequence33,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_senior_lecturer[randomSequence33,])
+
+			
+		      }
 		      #else{
 			#sorted_senior_lecturer1 <- sorted_senior_lecturer1[-(randomSequence3),]
 		      #}
 		      
 		      #Selecting assistant professor
-		      randomSequence4 <- sample(1:nrow(sorted_assistant_professor), 1, replace=F)
+		      #randomSequence4 <- sample(1:nrow(sorted_assistant_professor), 1, replace=F)
 		      
-		      if((sorted_assistant_professor[randomSequence4,6]) < totalDuties){
+		      #set.seed(110)
+		      randomSequence4 <- round(runif(1, 1, nrow(sorted_assistant_professor)))
+
+		      
+		      pool <- (randomSequence4 %in% dutyPoolForEachShift$Sequence)
+		      
+		      if(((sorted_assistant_professor[randomSequence4,6]) < totalDuties ) & pool == FALSE){
 			invigilation_pool4<- sorted_assistant_professor[randomSequence4,]
 			sorted_assistant_professor<- sorted_assistant_professor[-(randomSequence4),]
 			#increase the total number of duties of lecturer
 			sorted_assistant_professor[randomSequence4,6] <- sorted_assistant_professor[randomSequence4,6] + 1
 			sorted_assistant_professor1[randomSequence4,6] <- sorted_assistant_professor1[randomSequence4,6] + 1
 
+		      }else if(((sorted_assistant_professor[randomSequence4,6]) < totalDuties) & pool == TRUE){
+
+			sorted_assistant_professor <- sorted_assistant_professor[-(randomSequence4),]
+			randomSequence44 <- sample(1:nrow(sorted_assistant_professor), 1, replace=F)
+			invigilation_pool4<- sorted_assistant_professor[randomSequence44,]
+		
+			sorted_assistant_professor[randomSequence44,6] <- sorted_assistant_professor[randomSequence44,6] + 1
+			sorted_assistant_professor1[randomSequence44,6] <- sorted_assistant_professor1[randomSequence44,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_assistant_professor[randomSequence44,])
+
+			
 		      }
 		      #else{
 			#sorted_assistant_professor1 <- sorted_assistant_professor1[-(randomSequence4),]
@@ -470,28 +661,60 @@ for (day in 1:endDay){
 		      invigilation_pool2 <- NULL
 		      
 		      #Selecting lecturer
-		      randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #set.seed(111)
+		      randomSequence1 <- round(runif(1, 1, nrow(sorted_lecturer)))
+	
+		      pool <- (randomSequence1 %in% dutyPoolForEachShift$Sequence)
 
-		      if((sorted_lecturer[randomSequence1,6]) < totalDuties){
+		      if(((sorted_lecturer[randomSequence1,6]) < totalDuties ) & pool == FALSE){
 			invigilation_pool1<- sorted_lecturer[randomSequence1,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence1,6] <- sorted_lecturer[randomSequence1,6] + 1
 			sorted_lecturer1[randomSequence1,6] <- sorted_lecturer1[randomSequence1,6] + 1
+		      }else if(((sorted_lecturer[randomSequence1,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
+			randomSequence11 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_pool1<- sorted_lecturer[randomSequence11,]
+		
+			sorted_lecturer[randomSequence11,6] <- sorted_lecturer[randomSequence11,6] + 1
+			sorted_lecturer1[randomSequence11,6] <- sorted_lecturer1[randomSequence11,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence1,])
+
+			
 		      }
 		      #else{
 			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence1),]
 		      #}
 
 		      #Selecting senior lecturer
-		      randomSequence2 <- sample(1:nrow(sorted_senior_lecturer), 1, replace=F)
-
-		      if((sorted_senior_lecturer[randomSequence2,6]) < totalDuties){
+		      #randomSequence2 <- sample(1:nrow(sorted_senior_lecturer), 1, replace=F)
+		      #set.seed(112)
+		      randomSequence2 <- round(runif(1, 1, nrow(sorted_senior_lecturer)))
+	
+		      pool <- (randomSequence2 %in% dutyPoolForEachShift$Sequence)
+		      
+		      if(((sorted_senior_lecturer[randomSequence2,6]) < totalDuties ) & pool == FALSE){
 			invigilation_pool2<- sorted_senior_lecturer[randomSequence2,]
 			sorted_senior_lecturer <- sorted_senior_lecturer[-(randomSequence2),]
 			#increase the total number of duties of lecturer
 			sorted_senior_lecturer[randomSequence2,6] <- sorted_senior_lecturer[randomSequence2,6] + 1
 			sorted_senior_lecturer1[randomSequence2,6] <- sorted_senior_lecturer1[randomSequence2,6] + 1
+			
+		      }else if(((sorted_senior_lecturer[randomSequence2,6]) < totalDuties) & pool == TRUE){
+
+			sorted_senior_lecturer <- sorted_senior_lecturer[-(randomSequence2),]
+			randomSequence22 <- sample(1:nrow(sorted_senior_lecturer), 1, replace=F)
+			invigilation_pool2<- sorted_senior_lecturer[randomSequence22,]
+		
+			sorted_senior_lecturer[randomSequence22,6] <- sorted_senior_lecturer[randomSequence22,6] + 1
+			sorted_senior_lecturer1[randomSequence22,6] <- sorted_senior_lecturer1[randomSequence22,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_senior_lecturer[randomSequence22,])
+
 			
 		      }
 		      #else{
@@ -584,14 +807,30 @@ for (day in 1:endDay){
 		      invigilation_pool2 <- NULL
 		      
 		      #Selecting lecturer
-		      randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #set.seed(113)
+		      randomSequence1 <- round(runif(1, 1, nrow(sorted_lecturer)))
+	
+		      pool <- (randomSequence1 %in% dutyPoolForEachShift$Sequence)
 		      
-		      if((sorted_lecturer[randomSequence1,6]) < totalDuties){
+		      if(((sorted_lecturer[randomSequence1,6]) < totalDuties ) & pool == FALSE){
 			invigilation_pool1<- sorted_lecturer[randomSequence1,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence1,6] <- sorted_lecturer[randomSequence1,6] + 1
 			sorted_lecturer1[randomSequence1,6] <- sorted_lecturer1[randomSequence1,6] + 1
+		      }else if(((sorted_lecturer[randomSequence1,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
+			randomSequence11 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_pool1<- sorted_lecturer[randomSequence11,]
+		
+			sorted_lecturer[randomSequence11,6] <- sorted_lecturer[randomSequence11,6] + 1
+			sorted_lecturer1[randomSequence11,6] <- sorted_lecturer1[randomSequence11,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence1,])
+
+			
 		      }
 		      #else{
 			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence1),]
@@ -600,15 +839,31 @@ for (day in 1:endDay){
 		      #sorted_lecturer[randomSequence1,5] <- sorted_lecturer[randomSequence1,5] + 1
 
       		      #Selecting lecturer
-		      randomSequence2 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #randomSequence2 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #set.seed(114)
+		      randomSequence2 <- round(runif(1, 1, nrow(sorted_lecturer)))
+		  
+		      pool <- (randomSequence2 %in% dutyPoolForEachShift$Sequence)
 		      
-		      if((sorted_lecturer[randomSequence2,6]) < totalDuties){
+		      if(((sorted_lecturer[randomSequence2,6]) < totalDuties ) & pool == FALSE){
 			invigilation_pool2<- sorted_lecturer[randomSequence2,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence2),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence2,6] <- sorted_lecturer[randomSequence2,6] + 1
 			sorted_lecturer1[randomSequence2,6] <- sorted_lecturer1[randomSequence2,6] + 1
 
+		      }else if(((sorted_lecturer[randomSequence2,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence2),]
+			randomSequence22 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_pool2<- sorted_lecturer[randomSequence22,]
+		
+			sorted_lecturer[randomSequence22,6] <- sorted_lecturer[randomSequence22,6] + 1
+			sorted_lecturer1[randomSequence22,6] <- sorted_lecturer1[randomSequence22,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence22,])
+
+			
 		      }
 		      #else{
 			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence2),]
@@ -697,15 +952,31 @@ for (day in 1:endDay){
 		      invigilation_pool2 <- NULL
 		      
 		      #Selecting lecturer
-		      randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #randomSequence1 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #set.seed(115)
+		      randomSequence1 <- round(runif(1, 1, nrow(sorted_lecturer)))
+		  
+		      pool <- (randomSequence1 %in% dutyPoolForEachShift$Sequence)
 		      
-		      if((sorted_lecturer[randomSequence1,6]) < totalDuties){
+		      if(((sorted_lecturer[randomSequence1,6]) < totalDuties ) & pool == FALSE){
 			invigilation_pool1<- sorted_lecturer[randomSequence1,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence1,6] <- sorted_lecturer[randomSequence1,6] + 1
 			sorted_lecturer1[randomSequence1,6] <- sorted_lecturer1[randomSequence1,6] + 1
 
+		      }else if(((sorted_lecturer[randomSequence1,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence1),]
+			randomSequence11 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_pool1<- sorted_lecturer[randomSequence11,]
+		
+			sorted_lecturer[randomSequence11,6] <- sorted_lecturer[randomSequence11,6] + 1
+			sorted_lecturer1[randomSequence11,6] <- sorted_lecturer1[randomSequence11,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence1,])
+
+			
 		      }
 		      #else{
 			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence1),]
@@ -715,14 +986,30 @@ for (day in 1:endDay){
 		      #sorted_lecturer[randomSequence1,5] <- sorted_lecturer[randomSequence1,5] + 1
 
       		      #Selecting lecturer
-		      randomSequence2 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #randomSequence2 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+		      #set.seed(116)
+		      randomSequence2 <- round(runif(1, 1, nrow(sorted_lecturer)))
+		  
+		      pool <- (randomSequence2 %in% dutyPoolForEachShift$Sequence)
 		      
-		      if((sorted_lecturer[randomSequence2,6]) < totalDuties){
+		      if(((sorted_lecturer[randomSequence2,6]) < totalDuties ) & pool == FALSE){
 			invigilation_pool2<- sorted_lecturer[randomSequence2,]
 			sorted_lecturer <- sorted_lecturer[-(randomSequence2),]
 			#increase the total number of duties of lecturer
 			sorted_lecturer[randomSequence2,6] <- sorted_lecturer[randomSequence2,6] + 1
 			sorted_lecturer1[randomSequence2,6] <- sorted_lecturer1[randomSequence2,6] + 1
+		      }else if(((sorted_lecturer[randomSequence2,6]) < totalDuties) & pool == TRUE){
+
+			sorted_lecturer <- sorted_lecturer[-(randomSequence2),]
+			randomSequence22 <- sample(1:nrow(sorted_lecturer), 1, replace=F)
+			invigilation_poo2<- sorted_lecturer[randomSequence22,]
+		
+			sorted_lecturer[randomSequence22,6] <- sorted_lecturer[randomSequence22,6] + 1
+			sorted_lecturer1[randomSequence22,6] <- sorted_lecturer1[randomSequence22,6] + 1
+			
+			dutyPoolForEachShift<- rbind(dutyPoolForEachShift, sorted_lecturer[randomSequence22,])
+
+			
 		      }
 		      #else{
 			#sorted_lecturer1 <- sorted_lecturer1[-(randomSequence2),]
